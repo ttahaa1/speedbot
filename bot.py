@@ -6,7 +6,8 @@ def start(update, context):
 
 def main():
     # استخدام os.environ للوصول إلى متغير التكوين
-    updater = Updater(token=os.environ.get('TELEGRAM_TOKEN'), use_context=True)
+    updater = Updater(token=os.environ.get('TELEGRAM_BOT_TOKEN'), use_context=True)
+
     
     # اضف الأمر الذي تريد تخصيصه
     dp = updater.dispatcher
