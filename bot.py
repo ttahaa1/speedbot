@@ -1,25 +1,23 @@
-const { Telegraf } = require('telegraf');
-const bot = new Telegraf('YOUR_BOT_TOKEN');
+from telegram import Update
+from telegram.ext import Updater, CommandHandler, CallbackContext
 
-// استمع للرسائل النصية وقم بتنفيذ الإجراء المناسب
-bot.on('text', (ctx) => {
-  const command = ctx.message.text;
-  // قم بتنفيذ الإجراء المناسب استنادًا إلى الأمر المستلم
-  executeCommand(command, ctx);
-});
+# Replace 'YOUR_BOT_TOKEN' with your actual bot token
+updater = Updater(token='YOUR_BOT_TOKEN', use_context=True)
 
-// وظيفة لتنفيذ الأوامر
-function executeCommand(command, ctx) {
-  // قم بتنفيذ الأمر المناسب هنا
-  // مثال:
-  if (command === '/start') {
-    ctx.reply('مرحبًا بك! يمكنك بدء استخدام البوت الخاص بك.');
-  } else if (command === '/info') {
-    ctx.reply('معلومات عن البوت...');
-  } else {
-    ctx.reply('لم يتم فهم الأمر.');
-  }
-}
+def start(update: Update, context: CallbackContext) -> None:
+    user = update.effective_user
+    update.message.reply_markdown_v2(
+        fr'Hi {user.mention_markdown_v2()}\!',
+        reply_markup=None,
+    )
 
-// تشغيل البوت
-bot.launch();
+def main() -> None:
+    dp = updater.dispatcher
+    dp.add_handler(CommandHandler("start", start))
+
+    # Start the Bot
+    updater.start_polling()
+    updater.idle()
+
+if __name__ == '__main__':
+    main()
